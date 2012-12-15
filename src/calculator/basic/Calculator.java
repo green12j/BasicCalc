@@ -50,7 +50,6 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 		buttonPanel.setLayout(new GridLayout(5, 4));
 		for (int i = 0; i < buttons.length; i++) {
 			buttons[i].addActionListener(this);
-			buttons[i].addKeyListener(this);
 			buttonPanel.add(buttons[i]);
 		}
 		
@@ -58,6 +57,7 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 		IO.setPreferredSize(new Dimension(200, 50));
 		IO.setText(tempVal);
 		IO.setHorizontalAlignment(JTextField.RIGHT);
+		IO.addKeyListener(this);
 		JPanel IOPanel = new JPanel();
 		IOPanel.add(IO);
 		
@@ -181,7 +181,71 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		char keyChar = e.getKeyChar();
+		holdPrint = false;
 		
+		if (tempVal.equals("0"))
+			tempVal = "";
+		
+		if (keyChar == '0')
+			tempVal = tempVal + "0";
+		else if (keyChar == '1')
+			tempVal = tempVal + "1";
+		else if (keyChar == '2')
+			tempVal = tempVal + "2";
+		else if (keyChar == '3')
+			tempVal = tempVal + "3";
+		else if (keyChar == '4')
+			tempVal = tempVal + "4";
+		else if (keyChar == '5')
+			tempVal = tempVal + "5";
+		else if (keyChar == '6')
+			tempVal = tempVal + "6";
+		else if (keyChar == '7')
+			tempVal = tempVal + "7";
+		else if (keyChar == '8')
+			tempVal = tempVal + "8";
+		else if (keyChar == '9')
+			tempVal = tempVal + "9";
+		else if (keyChar == '.') {
+			if (!tempVal.contains(".")) {
+				if (tempVal.equals(""))
+					tempVal = "0.";
+				else
+					tempVal = tempVal + ".";
+			}
+		}
+		else if (keyChar == '=')
+			;
+		else if (keyChar == '/')
+			performOperation("/");
+		else if (keyChar == '*')
+			performOperation("*");
+		else if (keyChar == '+')
+			performOperation("+");
+		else if (keyChar == '-')
+			performOperation("-");
+		else if (keyChar == '\n') {
+			if (op.equals("+"))
+				val1 += Double.parseDouble(tempVal);
+			else if (op.equals("-"))
+				val1 -= Double.parseDouble(tempVal);
+			else if (op.equals("*"))
+				val1 *= Double.parseDouble(tempVal);
+			else if (op.equals("/"))
+				val1 /= Double.parseDouble(tempVal);
+			else
+				val1 = Double.parseDouble(tempVal);
+
+			op = "";
+			holdPrint = true;
+			tempVal = "0";
+		}
+		else if (keyChar == 'c') {		// Clear
+			tempVal = "0";
+			val1 = 0;
+			op = "";
+		}
 	}
 	@Override
 	public void keyPressed(KeyEvent e){}
