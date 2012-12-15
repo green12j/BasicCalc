@@ -22,6 +22,7 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 	private String tempVal = "0";
 	private String op = "";
 	private double val1 = 0;
+	private boolean holdPrint = false;
 	
 	public Calculator() {
 		buttons[0] = new JButton("C");
@@ -76,6 +77,8 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		holdPrint = false;
+		
 		if (tempVal.equals("0"))
 			tempVal = "";
 		
@@ -145,9 +148,9 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 			else
 				val1 = Double.parseDouble(tempVal);
 
-			tempVal = String.valueOf(val1);
 			op = "";
-			val1 = 0;
+			holdPrint = true;
+			tempVal = "0";
 		}
 		
 		else if (e.getSource() == buttons[17]) 	// 0
@@ -168,7 +171,9 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 		}
 		
 		/** Prints the input/output in the IO panel. **/
-		if (!op.equals(""))
+		if (holdPrint)
+			IO.setText(String.valueOf(val1));
+		else if (!op.equals(""))
 			IO.setText(String.format("%8s %8s %8s", String.valueOf(val1), op, tempVal));
 		else
 			IO.setText(tempVal);
@@ -184,6 +189,9 @@ public class Calculator extends JFrame implements ActionListener, KeyListener{
 	public void keyReleased(KeyEvent e) {}
 
 	private void performOperation(String oper) {
+		if (tempVal.equals(""))
+			tempVal = "0";
+		
 		if (op.equals(""))
 			val1 = Double.parseDouble(tempVal);
 		
