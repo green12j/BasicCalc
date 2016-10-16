@@ -1,4 +1,4 @@
 BasicCalc
 =========
 
-A basic calculator GUI project 
+A basic calculator GUI project written in Java
